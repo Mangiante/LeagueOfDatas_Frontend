@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { Background } from './components/Background';
 import { Header } from './components/Header';
 import { SearchForm } from './components/SearchForm';
-import ProfileStats from './components/ProfileStats';
-import { MatchHistory } from './components/MatchHistory';
+import ProfileStats from './components/stats/ProfileStats';
+import { MatchHistory } from './components/match/MatchHistory';
 import { getMockSummonerData } from './services/mockData';
 
 interface Stats {
@@ -51,11 +51,11 @@ function App() {
 
           {showStats && (
             <>
-              <ProfileStats visible={showStats} stats={stats} />
-              <MatchHistory matches={summonerData?.matches || []} />
+          <ProfileStats visible={showStats} stats={stats} />
+          <MatchHistory matches={summonerData?.matches || []} />
             </>
           )}
-        </div>
+          </div>
       </div>
     </div>
   );
