@@ -1,41 +1,51 @@
-import React from 'react';
-import { Search, Globe, Hash } from 'lucide-react';
+import React, { useState } from 'react';
+import { Search, Globe } from 'lucide-react';
 
 interface SearchFormProps {
-  summonerName: string;
-  region: string;
-  hashtag: string;
-  onSummonerNameChange: (value: string) => void;
-  onRegionChange: (value: string) => void;
-  onHashtagChange: (value: string) => void;
-  onSubmit: (e: React.FormEvent) => void;
+  onSearch: (gameName: string, tagLine: string, region: string) => void;
 }
 
-export const SearchForm = ({
-  summonerName,
-  region,
-  hashtag,
-  onSummonerNameChange,
-  onRegionChange,
-  onHashtagChange,
-  onSubmit
-}: SearchFormProps) => {
+export const SearchForm = ({ onSearch }: SearchFormProps) => {
+  const [gameName, setGameName] = useState('');
+  const [tagLine, setTagLine] = useState('');
+  const [region, setRegion] = useState('EUW');
+
   const regions = ['BR', 'EUNE', 'EUW', 'LAN', 'LAS', 'NA', 'OCE', 'RU', 'TR', 'JP', 'KR'];
 
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    onSearch(gameName, tagLine, region);
+  };
+
   return (
-    <form onSubmit={onSubmit} className="bg-slate-800/50 backdrop-blur-sm p-8 rounded-lg shadow-xl border border-slate-700/50 animate-fade-in">
+    <form onSubmit={handleSubmit} className="bg-slate-800/50 backdrop-blur-sm p-8 rounded-lg shadow-xl border border-slate-700/50 animate-fade-in">
       <div className="space-y-6">
         <div>
           <label className="block text-sm font-medium mb-2 text-blue-200">
             <Search className="inline-block w-4 h-4 mr-2" />
-            Summoner Name
+            Game Name
           </label>
           <input
             type="text"
-            value={summonerName}
-            onChange={(e) => onSummonerNameChange(e.target.value)}
+            value={gameName}
+            onChange={(e) => setGameName(e.target.value)}
             className="w-full px-4 py-2 bg-slate-700/50 rounded-md border border-slate-600 focus:border-blue-400 focus:ring focus:ring-blue-400/20 transition-all text-white"
-            placeholder="Enter summoner name"
+            placeholder="Enter game name"
+            required
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium mb-2 text-blue-200">
+            <Search className="inline-block w-4 h-4 mr-2" />
+            Tag Line
+          </label>
+          <input
+            type="text"
+            value={tagLine}
+            onChange={(e) => setTagLine(e.target.value)}
+            className="w-full px-4 py-2 bg-slate-700/50 rounded-md border border-slate-600 focus:border-blue-400 focus:ring focus:ring-blue-400/20 transition-all text-white"
+            placeholder="Enter tag line"
             required
           />
         </div>
@@ -47,28 +57,13 @@ export const SearchForm = ({
           </label>
           <select
             value={region}
-            onChange={(e) => onRegionChange(e.target.value)}
+            onChange={(e) => setRegion(e.target.value)}
             className="w-full px-4 py-2 bg-slate-700/50 rounded-md border border-slate-600 focus:border-blue-400 focus:ring focus:ring-blue-400/20 transition-all text-white"
           >
             {regions.map((r) => (
               <option key={r} value={r}>{r}</option>
             ))}
           </select>
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium mb-2 text-blue-200">
-            <Hash className="inline-block w-4 h-4 mr-2" />
-            Hashtag
-          </label>
-          <input
-            type="text"
-            value={hashtag}
-            onChange={(e) => onHashtagChange(e.target.value)}
-            className="w-full px-4 py-2 bg-slate-700/50 rounded-md border border-slate-600 focus:border-blue-400 focus:ring focus:ring-blue-400/20 transition-all text-white"
-            placeholder="Enter hashtag (e.g., EUW)"
-            required
-          />
         </div>
 
         <button
